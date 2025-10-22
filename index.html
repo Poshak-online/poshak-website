@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Poshak — Baby Cereals</title>
+  <meta name="description" content="Poshak - Natural & nutritious baby cereals: 21 Grains, Panchamrut, Mixed Grains, Ragi Malt.">
+  <style>
+    :root{
+      --bg: #f6fbff;
+      --card: #ffffff;
+      --accent: #2b9ed8;
+      --accent-2: #00b894;
+      --muted: #6b7280;
+      --radius: 14px;
+      --shadow: 0 6px 18px rgba(22,33,62,0.08);
+      --glass: rgba(255,255,255,0.6);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg,#eef9ff 0%,#f6fbff 60%);
+      color:#0f172a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.35;
+    }
+
+    header{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      justify-content:space-between;
+      padding:20px;
+      max-width:1100px;
+      margin:20px auto;
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .logo{
+      width:60px;
+      height:60px;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:grid;
+      place-items:center;
+      color:white;
+      font-weight:700;
+      font-size:20px;
+      box-shadow: var(--shadow);
+    }
+    h1{margin:0;font-size:1.4rem;letter-spacing:0.2px}
+    p.lead{margin:4px 0 0;color:var(--muted);font-size:0.95rem}
+
+
+    main{max-width:1100px;margin:10px auto;padding:20px}
+
+    .hero{
+      background:linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.35));
+      border-radius:var(--radius);
+      padding:20px;
+      display:flex;
+      gap:20px;
+      align-items:center;
+      box-shadow: var(--shadow);
+    }
+    .hero-left{flex:1}
+    .hero-right{
+      width:220px;
+      display:grid;
+      place-items:center;
+    }
+    .hero h2{margin:0;font-size:1.6rem}
+    .hero p{color:var(--muted);margin-top:8px}
+
+    .products{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:18px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:12px;
+      padding:14px;
+      box-shadow: var(--shadow);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .card:hover{
+      transform: translateY(-8px);
+      box-shadow: 0 12px 28px rgba(43, 158, 216, 0.25);
+    }
+    .img{
+      height:120px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      font-size:48px;
+      background:linear-gradient(180deg, #fff 0%, #fafafa 100%);
+      border:1px dashed #eef3f7;
+    }
+    .name{font-weight:700;font-size:1.06rem}
+    .desc{color:var(--muted);font-size:0.94rem;margin-top:6px}
+    .price-row{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+    .price{font-weight:800;font-size:1.05rem}
+    .btn{
+      background:linear-gradient(180deg,#00b2ec,#0088d1);
+      color:white;padding:8px 12px;border-radius:10px;border:none;cursor:pointer;
+      font-weight:700;
+    }
+    .btn.secondary{
+      background:transparent;color:var(--accent);border:2px solid #e6f7ff;
+      box-shadow:none;font-weight:600;
+    }
+
+    footer{
+      max-width:1100px;margin:20px auto;padding:20px;color:var(--muted);
+      display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+    }
+
+    /* Modal/Popup styles */
+    .modal{
+      display:none;
+      position:fixed;
+      z-index:100;
+      left:0;
+      top:0;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.6);
+      justify-content:center;
+      align-items:center;
+    }
+    .modal.show{
+      display:flex;
+    }
+    .modal-content{
+      background:white;
+      border-radius:16px;
+      padding:24px;
+      max-width:500px;
+      width:90%;
+      max-height:80vh;
+      overflow-y:auto;
+      box-shadow:0 20px 60px rgba(0,0,0,0.3);
+      position:relative;
+    }
+    .modal-close{
+      position:absolute;
+      top:16px;
+      right:16px;
+      background:transparent;
+      border:none;
+      font-size:28px;
+      cursor:pointer;
+      color:var(--muted);
+      line-height:1;
+    }
+    .modal-close:hover{
+      color:#000;
+    }
+    .modal-image{
+      width:70%;
+      height:400px;
+      object-fit:cover;
+      border-radius:12px;
+      margin:0 auto 16px auto;
+      display:block;
+    }
+    .modal h3{
+      margin:0 0 12px 0;
+      font-size:1.5rem;
+    }
+    .modal .ingredients{
+      margin-top:16px;
+    }
+    .modal .ingredients h4{
+      margin:0 0 8px 0;
+      color:var(--accent);
+    }
+    .modal .ingredients p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+
+    @media (max-width:640px){
+      header{padding:12px}
+      .hero{flex-direction:column;align-items:flex-start}
+      .hero-right{width:100%}
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true">P</div>
+      <div>
+        <h1>Poshak</h1>
+        <p class="lead">Nourishing baby cereals — gentle, wholesome, and lovingly made.</p>
+      </div>
+    </div>
+
+  </header>
+
+  <main>
+    <section class="hero" role="banner" aria-labelledby="hero-title">
+      <div class="hero-left">
+        <h2 id="hero-title">Healthy cereals for your little one</h2>
+        <p>Choose from our four specially curated cereals — balanced, easily digestible, and made with love.</p>
+        <p style="margin-top:12px;color:var(--muted)"><strong>Free delivery</strong> on orders above $60.</p>
+      </div>
+      <div class="hero-right" aria-hidden="true">
+        <!-- gentle SVG baby icon -->
+        <svg width="110" height="110" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="0.5" y="0.5" width="23" height="23" rx="6.5" stroke="#e6f7ff"/>
+          <path d="M12 7.25a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" fill="#00b894"/>
+          <path d="M8 13c1.2-1 2.5-1.4 4-1.4s2.8.4 4 1.4v3.5a1 1 0 01-1 1H9a1 1 0 01-1-1V13z" fill="#2b9ed8"/>
+        </svg>
+      </div>
+    </section>
+
+    <section class="products" aria-label="Products">
+      <!-- Product: 21 Grains cereal -->
+      <article class="card" data-id="p1" data-name="21 Grains Cereal" data-price="15" data-image="images/21_grains.jpg" data-ingredients="All types of millets, Ragi, Soyabean, Whole Wheat, Bajra, Rice, Amaranth Seeds, Shabudana, Cumin seeds, Flex seeds, Sorghum millet, saunf, Fenugreek, Chickpeas, Masoor Daal, Mung Daal, Green Gram, Black Gram">
+        <div class="img" aria-hidden="true">🌾</div>
+        <div class="name">21 Grains Cereal</div>
+        <div class="desc">A nutrient-dense blend of 21 carefully selected grains and millets — for steady growth and energy.</div>
+        <div class="price-row">
+          <div>
+            <div class="price">$15</div>
+            <div style="font-size:0.85rem;color:var(--muted)">200g pack</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn secondary view">Details</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Product: Panchamrut -->
+      <article class="card" data-id="p2" data-name="Panchamrut" data-price="15" data-image="images/panchamrut.jpg" data-ingredients="Whole Wheat Malt, Ragi Malt, Amaranth Seeds, Garden Cress Seeds">
+        <div class="img" aria-hidden="true">🥣</div>
+        <div class="name">Panchamrut</div>
+        <div class="desc">Traditional blend with five nourishing ingredients — gentle on tummies, rich in taste.</div>
+        <div class="price-row">
+          <div>
+            <div class="price">$15</div>
+            <div style="font-size:0.85rem;color:var(--muted)">200g pack</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn secondary view">Details</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Product: Mixed Grains -->
+      <article class="card" data-id="p3" data-name="Mixed Grains" data-price="15" data-image="images/mix_grains.jpg" data-ingredients="Rice, Green Gram, Black Gram, Mung Daal, Masoor Daal, Chickpeas">
+        <div class="img" aria-hidden="true">&#127835;</div>
+        <div class="name">Mixed Grains</div>
+        <div class="desc">Balanced mix of Rice & Daal — easy to digest for developing palates.</div>
+        <div class="price-row">
+          <div>
+            <div class="price">$15</div>
+            <div style="font-size:0.85rem;color:var(--muted)">200g pack</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn secondary view">Details</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Product: Ragi Malt -->
+      <article class="card" data-id="p4" data-name="Ragi Malt" data-price="15" data-image="images/ragi_malt.jpg" data-ingredients="Sprouted Ragi (Finger Millet), Shatavari">
+        <div class="img" aria-hidden="true">🍚</div>
+        <div class="name">Ragi Malt</div>
+        <div class="desc">Ragi-based malt rich in calcium and iron — ideal for strengthening bones and healthy growth.</div>
+        <div class="price-row">
+          <div>
+            <div class="price">$15</div>
+            <div style="font-size:0.85rem;color:var(--muted)">200g pack</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn secondary view">Details</button>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <div>© <strong>Poshak</strong> • Nourishing little ones since today. </div>
+    <div style="color:var(--muted)">Questions? Email <a href="mailto:hello@poshak.example" style="color:inherit;text-decoration:underline">hello@poshak.example</a></div>
+  </footer>
+
+  <!-- Modal for product details -->
+  <div class="modal" id="productModal">
+    <div class="modal-content">
+      <button class="modal-close" id="closeModal">&times;</button>
+      <img class="modal-image" id="modalImage" src="" alt="">
+      <h3 id="modalTitle"></h3>
+      <p id="modalDescription"></p>
+      <p style="font-size:1.2rem;font-weight:700;margin:12px 0"><span id="modalPrice"></span> • 200g pack</p>
+      <div class="ingredients">
+        <h4>Ingredients</h4>
+        <p id="modalIngredients"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Modal functionality
+    const modal = document.getElementById('productModal');
+    const closeModalBtn = document.getElementById('closeModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalIngredients = document.getElementById('modalIngredients');
+
+    // Function to open modal with product details
+    function openModal(name, description, price, image, ingredients) {
+      modalTitle.textContent = name;
+      modalDescription.textContent = description;
+      modalPrice.textContent = '$' + price;
+      modalImage.src = image;
+      modalImage.alt = name;
+
+      // Display ingredients as comma-separated list
+      modalIngredients.textContent = ingredients;
+
+      modal.classList.add('show');
+    }
+
+    // Function to close modal
+    function closeModal() {
+      modal.classList.remove('show');
+    }
+
+    // Add click event to all product cards
+    document.querySelectorAll('.card').forEach(card => {
+      const name = card.dataset.name;
+      const price = card.dataset.price;
+      const image = card.dataset.image;
+      const ingredients = card.dataset.ingredients;
+      const description = card.querySelector('.desc').textContent;
+
+      card.querySelectorAll('.view').forEach(btn=>{
+        btn.addEventListener('click', () => {
+          openModal(name, description, price, image, ingredients);
+        });
+      });
+    });
+
+    // Close modal when clicking the close button
+    closeModalBtn.addEventListener('click', closeModal);
+
+    // Close modal when clicking outside the modal content
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('show')) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
+
